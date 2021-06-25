@@ -1,19 +1,16 @@
 import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UpdateBookDto } from '../book/dto/update-book.dto';
-import { UpdateUserDto } from '../user/dto/update-user.dto';
-import { User } from '../user/entities/user.entity';
-import { NOT_FOUND } from '../user/users.constants';
 import { CreateYearDto } from './dto/create-year.dto';
+import { UpdateYearDto } from './dto/update-year.dto';
 import { Year } from './entities/year.entity';
-import { ALREADY_EXISTS_YEAR } from './year.constants';
+import { ALREADY_EXISTS_YEAR, NOT_FOUND_YEAR } from './year.constants';
 
 @Injectable()
 export class YearService {
   constructor(@InjectRepository(Year) private readonly yearRepository: Repository<Year>) {}
 
-  async createYear(createYearDto: CreateYearDto): Promise<Year> {
+  async create(createYearDto: CreateYearDto): Promise<Year> {
     try {
       return this.yearRepository.save(createYearDto);
     } catch (e) {
@@ -22,11 +19,11 @@ export class YearService {
     }
   }
 
-  async findAllYear(): Promise<Year[]> {
+  async findAll(): Promise<Year[]> {
     return this.yearRepository.find();
   }
 
-  async findOneById(id: number): Promise<Year> {
+  async findOne(id: number): Promise<Year> {
     return this.yearRepository.findOne(id);
   }
 
@@ -34,15 +31,15 @@ export class YearService {
     return this.yearRepository.findOne({ value });
   }
 
-  update(id: number, updateBookDto: UpdateBookDto): Promise<Year> {
-    const year = this.findOneById(id);
-    if (!year) throw new NotFoundException(NOT_FOUND);
-    return this.yearRepository.save({ id, ...updateBookDto });
+  async update(id: number, updateYearDto: UpdateYearDto): Promise<Year> {
+    const year = await this.findOne(id);
+    if (!year) throw new NotFoundException(NOT_FOUND_YEAR);
+    return this.yearRepository.save({ id, ...updateYearDto });
   }
 
   async remove(id: number): Promise<Year> {
-    const year = await this.findOneById(id);
-    if (!year) throw new NotFoundException(NOT_FOUND);
+    const year = await this.findOne(id);
+    if (!year) throw new NotFoundException(NOT_FOUND_YEAR);
     return this.yearRepository.remove(year);
   }
 }

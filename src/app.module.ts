@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { TokenModule } from './token/token.module';
 import { YearModule } from './year/year.module';
+import { AuthorModule } from './author/author.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { YearModule } from './year/year.module';
     RoleModule,
     TokenModule,
     YearModule,
+    AuthorModule,
   ],
   controllers: [],
   // providers: [

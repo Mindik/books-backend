@@ -1,6 +1,6 @@
 import { Transform } from 'class-transformer';
 import { Column, Entity, Index, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Book } from './book.entity';
+import { Book } from '../../book/entities/book.entity';
 
 @Entity()
 export class Author {

@@ -8,5 +8,6 @@ import { YearService } from './year.service';
   imports: [TypeOrmModule.forFeature([Year])],
   controllers: [YearController],
   providers: [YearService],
+  exports: [YearService],
 })
 export class YearModule {}
